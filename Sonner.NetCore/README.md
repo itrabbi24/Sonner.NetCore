@@ -1,6 +1,6 @@
 # Sonner.NetCore
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/itrabbi24/sonner-dotnet-core)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/itrabbi24/Sonner.NetCore)
 
 An elegant, robust, and lightweight toaster library for .NET Core MVC and Razor Pages. Inspired by the popular React library [Sonner](https://sonner.emilkowal.ski/), but built from the ground up for backend-driven .NET web applications.
 
@@ -12,16 +12,14 @@ By **ARG RABBI** - [Visit Profile](https://itrabbi24.github.io/)
 
 ## 🚀 Features
 
-- **Full Positioning Support:** All 6 positions (Top/Bottom + Left/Center/Right).
-- **Stacking & Expanding:** Elegant toast stacking by default, expanding on hover.
-- **Rich Colors:** Vibrant color palettes for Success, Error, Warning, and Info.
-- **Dark Theme:** Built-in night mode support.
+- **Full Positioning Support:** Choose from 6 different positions.
+- **Stacking & Expanding:** Sophisticated stacking logic that expands on hover.
+- **Rich Colors:** Vibrant background colors for success, error, info, and warning states.
+- **Dark Theme:** Built-in support for dark mode.
 - **Close Button:** Optional dismiss button for individual toasts.
 - **No React/Vue required!** Pure Vanilla JS and CSS natively integrated into .NET.
-- **Trigger Toasts from C#:** Seamlessly add toasts directly from your Controllers (`.AddSuccessToast()`).
-- **Tag Helper Integration:** Simply drop `<sonner-toaster></sonner-toaster>` into your Layout.
-- **Embedded Resources:** CSS and JS are bundled directly inside the NuGet package.
-- **Framework Support:** Compatible with .NET 5.0 through .NET 9.0.
+- **Trigger Toasts from C#:** Seamlessly add toasts directly from your Controllers.
+- **Tag Helper Integration:** Clean syntax in Razor views.
 
 ---
 
@@ -37,63 +35,44 @@ Install-Package ARG.RABBI.Sonner.NetCore
 dotnet add package ARG.RABBI.Sonner.NetCore
 ```
 
-*(Note: Ensure you are publishing to NuGet.org under the ID "ARG.RABBI.Sonner.NetCore" for these commands to work).*
-
 ---
 
-## 💻 Setup Guide
+## 💻 Configuration
 
-Follow these 3 simple steps to integrate Sonner into your .NET Core application.
+Initialize the toaster in your `_Layout.cshtml` using the Tag Helper.
 
-### 1. Register the Middleware (Program.cs / Startup.cs)
-This middleware serves the beautifully crafted Sonner CSS and JS files that come embedded in the package.
+### Options Summary
 
-**For .NET 6+ (`Program.cs`):**
+| Attribute | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `position` | `Enum` | `BottomRight` | Toast container position. |
+| `expand` | `bool` | `false` | Whether toasts should be expanded by default. |
+| `rich-colors` | `bool` | `false` | Enable vibrant background colors. |
+| `close-button` | `bool` | `false` | Show a close button on each toast. |
+| `theme` | `string` | `light` | `light` or `dark`. |
+
+### 1. Register the Middleware (Program.cs)
 ```csharp
 app.UseRouting();
-
-// Add this line after UseRouting() but before UseAuthorization()
-app.UseSonner(); 
-
+app.UseSonner(); // Serves the embedded CSS/JS
 app.UseAuthorization();
 ```
 
-**For .NET 5 (`Startup.cs`):**
-```csharp
-public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-{
-    app.UseRouting();
-    
-    app.UseSonner(); // Serves the embedded CSS/JS
-
-    app.UseAuthorization();
-}
-```
-
-### 2. Add the Tag Helpers (`_ViewImports.cshtml`)
-Open your `Views/_ViewImports.cshtml` file and add the Sonner namespace so your views can recognize the custom tag:
-
+### 2. Add Tag Helpers (_ViewImports.cshtml)
 ```cshtml
-@using YourAppName
-@using YourAppName.Models
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
-<!-- Add this line -->
 @addTagHelper *, Sonner.NetCore
 ```
 
-### 3. Initialize the Toaster (`_Layout.cshtml`)
-Open your `Views/Shared/_Layout.cshtml`. You need to include the CSS in your `<head>`, and place the JS and `<sonner-toaster>` tag right before the closing `</body>` tag.
+### 3. Initialize in Layout (_Layout.cshtml)
+Include the CSS in `<head>` and the script + tag helper before `</body>`.
 
 ```html
 <head>
-    <!-- ... other links ... -->
     <link rel="stylesheet" href="~/sonner.css" />
 </head>
 <body>
-    <!-- ... your app content ... -->
+    @RenderBody()
 
-    <!-- Load Sonner -->
     <script src="~/sonner.js"></script>
     <sonner-toaster 
         position="BottomRight" 
@@ -103,79 +82,66 @@ Open your `Views/Shared/_Layout.cshtml`. You need to include the CSS in your `<h
         theme="light">
     </sonner-toaster>
 </body>
-</html>
 ```
 
 ---
 
-## 🔥 Usage (Triggering Toasts from C#)
+## 🎨 Positioning
+Sonner.NetCore supports 6 positions out of the box:
+- `TopLeft`
+- `TopCenter`
+- `TopRight`
+- `BottomLeft`
+- `BottomCenter`
+- `BottomRight`
 
-The magic of this package is how easy it is to trigger a beautiful UI toast from your backend server logic.
+```html
+<sonner-toaster position="TopCenter"></sonner-toaster>
+```
 
-In any of your Controllers, you can use the built-in extension methods before returning a View or Redirect:
+---
+
+## 🔥 Usage (Backend)
+
+Trigger toasts directly from your Controllers using extension methods.
 
 ```csharp
-using Microsoft.AspNetCore.Mvc;
-using Sonner.NetCore; // Import the extensions
-
-public class AccountController : Controller
+public IActionResult Save()
 {
-    [HttpPost]
-    public IActionResult Login(LoginModel model)
-    {
-        if (model.IsValid)
-        {
-            // Trigger a Success Toast!
-            this.AddSuccessToast("Welcome back, Mr. Rabbi!", "Login Successful");
-            return RedirectToAction("Dashboard");
-        }
-        else
-        {
-            // Trigger an Error Toast!
-            this.AddErrorToast("Invalid credentials provided.", "Login Failed");
-            return View(model);
-        }
-    }
+    // Simple toast
+    this.AddSuccessToast("Data saved successfully!");
     
-    public IActionResult SaveSettings()
-    {
-        // General Toast with custom type
-        this.AddToast("Your settings have been updated.", ToastType.Info, "Settings Saved");
-        return RedirectToAction("Index");
-    }
+    // Toast with title
+    this.AddErrorToast("Please check your input.", "Validation Error");
+    
+    // Custom toast
+    this.AddToast("Warning message", ToastType.Warning);
+    
+    return RedirectToAction("Index");
 }
 ```
 
-### Supported Toast Types
-- `ToastType.Default`
-- `ToastType.Success`
-- `ToastType.Error`
-- `ToastType.Warning`
-- `ToastType.Info`
+---
+
+## ⚡ Usage (Frontend)
+
+You can also trigger toasts manually from JavaScript using the global `window.sonnerInstance`.
+
+```javascript
+// Success toast
+window.sonnerInstance.toast('Operation completed!', 'Success', 'Success Title');
+
+// Error toast
+window.sonnerInstance.toast('Something went wrong.', 'Error');
+```
 
 ---
 
-## 🛠️ How it Works under the Hood
-
-1. **TempData Storage:** When you call `this.AddSuccessToast()`, the message is serialized into JSON and stored securely in ASP.NET's `TempData` dictionary.
-2. **TagHelper Rendering:** Upon the next page load (even across redirects), the `<sonner-toaster>` Tag Helper reads the TempData.
-3. **JS Execution:** The Tag Helper injects lightweight Vanilla JavaScript to trigger the beautiful `window.sonner.toast()` animation on the user's screen.
-
----
-
-## 📜 Publishing to NuGet (For the Developer)
-
-If you are modifying this library and want to publish an update to NuGet:
-
-1. Open `Sonner.NetCore/Sonner.NetCore.csproj`.
-2. Update the `<Version>1.0.1</Version>` tag.
-3. Open your terminal at the solution root and run:
-   ```bash
-   cd Sonner.NetCore
-   dotnet pack -c Release
-   ```
-4. Find the `.nupkg` file in `bin/Release/`.
-5. Upload to [NuGet.org](https://www.nuget.org/).
+## 📜 Publishing Update
+To publish a new version:
+1. Update version in `.csproj`.
+2. Run `dotnet pack -c Release`.
+3. Upload `.nupkg` to NuGet.org.
 
 ---
 
