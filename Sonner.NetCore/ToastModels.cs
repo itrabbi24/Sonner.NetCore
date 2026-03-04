@@ -33,5 +33,6 @@ namespace Sonner.NetCore
         public string Message { get; set; } = string.Empty;
         public ToastType Type { get; set; } = ToastType.Default;
         public string? Title { get; set; }
+        public ToasterPosition? Position { get; set; }
     }
 }

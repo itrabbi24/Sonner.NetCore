@@ -114,8 +114,11 @@ public IActionResult Save()
     // Toast with title
     this.AddErrorToast("Please check your input.", "Validation Error");
     
+    // Toast with custom position override
+    this.AddWarningToast("Attention required!", position: ToasterPosition.TopRight);
+    
     // Custom toast
-    this.AddToast("Warning message", ToastType.Warning);
+    this.AddToast("Info message", ToastType.Info, position: ToasterPosition.BottomLeft);
     
     return RedirectToAction("Index");
 }
@@ -137,12 +140,6 @@ window.sonnerInstance.toast('Something went wrong.', 'Error');
 
 ---
 
-## 📜 Publishing Update
-To publish a new version:
-1. Update version in `.csproj`.
-2. Run `dotnet pack -c Release`.
-3. Upload `.nupkg` to NuGet.org.
 
----
 
 *Crafted with ❤️ by ARG RABBI for the robust .NET ecosystem.*

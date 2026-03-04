@@ -9,21 +9,21 @@ namespace Sonner.NetCore
 {
     private const string TempDataKey = "SonnerToasts";
 
-    public static void AddToast(this Controller controller, string message, ToastType type = ToastType.Default, string? title = null)
+    public static void AddToast(this Controller controller, string message, ToastType type = ToastType.Default, string? title = null, ToasterPosition? position = null)
     {
         var tempDataProvider = controller.TempData;
         var toasts = GetToasts(tempDataProvider);
 
-        toasts.Add(new ToastMessage { Message = message, Type = type, Title = title });
+        toasts.Add(new ToastMessage { Message = message, Type = type, Title = title, Position = position });
 
         tempDataProvider[TempDataKey] = JsonSerializer.Serialize(toasts);
     }
 
-    public static void AddSuccessToast(this Controller controller, string message, string? title = null)
-        => AddToast(controller, message, ToastType.Success, title);
+    public static void AddSuccessToast(this Controller controller, string message, string? title = null, ToasterPosition? position = null)
+        => AddToast(controller, message, ToastType.Success, title, position);
 
-    public static void AddErrorToast(this Controller controller, string message, string? title = null)
-        => AddToast(controller, message, ToastType.Error, title);
+    public static void AddErrorToast(this Controller controller, string message, string? title = null, ToasterPosition? position = null)
+        => AddToast(controller, message, ToastType.Error, title, position);
 
     public static List<ToastMessage> GetToasts(ITempDataDictionary tempData)
     {

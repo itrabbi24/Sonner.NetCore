@@ -114,8 +114,11 @@ public IActionResult Save()
     // Toast with title
     this.AddErrorToast("Please check your input.", "Validation Error");
     
+    // Toast with custom position override
+    this.AddWarningToast("Attention required!", position: ToasterPosition.TopRight);
+    
     // Custom toast
-    this.AddToast("Warning message", ToastType.Warning);
+    this.AddToast("Info message", ToastType.Info, position: ToasterPosition.BottomLeft);
     
     return RedirectToAction("Index");
 }

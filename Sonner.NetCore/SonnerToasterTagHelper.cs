@@ -50,7 +50,16 @@ namespace Sonner.NetCore
             {
                 var message = JsonSerializer.Serialize(toast.Message);
                 var title = toast.Title != null ? JsonSerializer.Serialize(toast.Title) : "null";
-                scriptBuilder.AppendLine($"    window.sonnerInstance.toast({message}, '{toast.Type}', {title});");
+                var toastPos = "null";
+                if (toast.Position.HasValue)
+                {
+                    string p = toast.Position.Value.ToString();
+                    if (p.StartsWith("Top")) p = "top-" + p.Substring(3).ToLower();
+                    else if (p.StartsWith("Bottom")) p = "bottom-" + p.Substring(6).ToLower();
+                    toastPos = $"'{p.ToLower()}'";
+                }
+                
+                scriptBuilder.AppendLine($"    window.sonnerInstance.toast({message}, '{toast.Type}', {title}, {toastPos});");
             }
 
             scriptBuilder.AppendLine("});");
