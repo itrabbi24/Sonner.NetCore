@@ -44,9 +44,10 @@ Follow these simple steps to integrate Sonner into your .NET application.
 
 ### 1. Register the Middleware
 
-This serves the embedded assets. Choose the guide based on your .NET version:
+This serves the embedded assets. Choose the guide based on your project style:
 
-#### **For .NET 6, 7, 8, & 9 (`Program.cs`)**
+#### **Modern Hosting Style (.NET 6, 7, 8, & 9)**
+Usually found in `Program.cs` (Top-level statements).
 ```csharp
 app.UseRouting();
 
@@ -56,7 +57,8 @@ app.UseSonner();
 app.UseAuthorization();
 ```
 
-#### **For .NET 5 (`Startup.cs`)**
+#### **Legacy Hosting Style (.NET 5 and below)**
+Usually found in `Startup.cs` (Configure method).
 ```csharp
 public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 {
