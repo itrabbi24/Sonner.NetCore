@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4 fw-bold">ARG RABBI Sonner for .NET Core MVC</h1>
+    <p class="lead">An elegant toast system built specifically for ASP.NET MVC and Razor Pages without React/Vue.</p>
+</div>
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h4 class="mb-4">Trigger a Toast from the Backend</h4>
+                
+                <form asp-controller="Home" asp-action="TriggerToast" method="post">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Toast Type</label>
+                        <select name="type" class="form-select">
+                            <option value="Default">Default</option>
+                            <option value="Success">Success</option>
+                            <option value="Error">Error</option>
+                            <option value="Warning">Warning</option>
+                            <option value="Info">Info</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Title (Optional)</label>
+                        <input type="text" name="title" class="form-control" placeholder="e.g., File Uploaded" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Message</label>
+                        <textarea name="message" class="form-control" rows="2" required>This is an example toast from ARG RABBI's .NET Sonner library!</textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark w-100 py-2">Trigger Toast &amp; Reload Page</button>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

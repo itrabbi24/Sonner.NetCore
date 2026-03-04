@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+Sonner.NetCore.Demo/bin/
+Sonner.NetCore.Demo/obj/
+Sonner.NetCore/bin/
+Sonner.NetCore/obj/

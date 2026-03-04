@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+
+    <!-- NuGet Package Properties -->
+    <PackageId>ARG.RABBI.Sonner.NetCore</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>ARG RABBI</Authors>
+    <Company>ARG RABBI</Company>
+    <Description>An elegant, Sonner-inspired Vanilla JS Toast library for ASP.NET Core MVC &amp; Razor Pages.</Description>
+    <RepositoryUrl>https://github.com/itrabbi24/sonner-dotnet-core</RepositoryUrl>
+    <ProjectUrl>https://itrabbi24.github.io/</ProjectUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include CSS and JS inside the compiled DLL so users don't have to manually copy them -->
+    <EmbeddedResource Include="wwwroot\css\sonner.css" />
+    <EmbeddedResource Include="wwwroot\js\sonner.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+</Project>
