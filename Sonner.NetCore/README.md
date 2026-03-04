@@ -128,14 +128,18 @@ public IActionResult Save()
 
 ## ⚡ Usage (Frontend)
 
-You can also trigger toasts manually from JavaScript using the global `window.sonnerInstance`.
+You can also trigger toasts manually from JavaScript using the global `window.sonnerInstance`. Per-toast position overrides the global configuration.
 
 ```javascript
-// Success toast
+// Success toast with default position
 window.sonnerInstance.toast('Operation completed!', 'Success', 'Success Title');
 
-// Error toast
-window.sonnerInstance.toast('Something went wrong.', 'Error');
+// Error toast with specific position override
+window.sonnerInstance.toast('Something went wrong.', 'Error', null, 'top-center');
+
+// Supported position strings: 
+// 'top-left', 'top-center', 'top-right', 
+// 'bottom-left', 'bottom-center', 'bottom-right'
 ```
 
 ---

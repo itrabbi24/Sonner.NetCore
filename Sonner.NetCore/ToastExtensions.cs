@@ -25,6 +25,12 @@ namespace Sonner.NetCore
     public static void AddErrorToast(this Controller controller, string message, string? title = null, ToasterPosition? position = null)
         => AddToast(controller, message, ToastType.Error, title, position);
 
+    public static void AddWarningToast(this Controller controller, string message, string? title = null, ToasterPosition? position = null)
+        => AddToast(controller, message, ToastType.Warning, title, position);
+
+    public static void AddInfoToast(this Controller controller, string message, string? title = null, ToasterPosition? position = null)
+        => AddToast(controller, message, ToastType.Info, title, position);
+
     public static List<ToastMessage> GetToasts(ITempDataDictionary tempData)
     {
         if (tempData.TryGetValue(TempDataKey, out var val) && val is string json)
