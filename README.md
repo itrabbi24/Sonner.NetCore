@@ -155,7 +155,6 @@ window.sonnerInstance.toast('Operation completed!', 'Success', 'Success Title');
 // Error toast with specific position override
 window.sonnerInstance.toast('Something went wrong.', 'Error', null, 'top-center');
 
-// Supported position strings: 
 ```
 
 ---
