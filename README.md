@@ -38,33 +38,45 @@ dotnet add package ARG.RABBI.Sonner.NetCore
 
 ---
 
-## 💻 Configuration
+## 💻 Setup Guide
 
-Initialize the toaster in your `_Layout.cshtml` using the Tag Helper.
+Follow these simple steps to integrate Sonner into your .NET application.
 
-### Options Summary
+### 1. Register the Middleware
 
-| Attribute | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `position` | `Enum` | `BottomRight` | Toast container position. |
-| `expand` | `bool` | `false` | Whether toasts should be expanded by default. |
-| `rich-colors` | `bool` | `false` | Enable vibrant background colors. |
-| `close-button` | `bool` | `false` | Show a close button on each toast. |
-| `theme` | `string` | `light` | `light` or `dark`. |
+This serves the embedded assets. Choose the guide based on your .NET version:
 
-### 1. Register the Middleware (Program.cs)
+#### **For .NET 6, 7, 8, & 9 (`Program.cs`)**
 ```csharp
 app.UseRouting();
-app.UseSonner(); // Serves the embedded CSS/JS
+
+// Add this line after UseRouting() but before UseAuthorization()
+app.UseSonner(); 
+
 app.UseAuthorization();
 ```
 
-### 2. Add Tag Helpers (_ViewImports.cshtml)
+#### **For .NET 5 (`Startup.cs`)**
+```csharp
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+{
+    app.UseRouting();
+    
+    // Add this line
+    app.UseSonner(); 
+
+    app.UseAuthorization();
+}
+```
+
+### 2. Add Tag Helpers (`_ViewImports.cshtml`)
+Add the Sonner namespace to your `Views/_ViewImports.cshtml`:
+
 ```cshtml
 @addTagHelper *, Sonner.NetCore
 ```
 
-### 3. Initialize in Layout (_Layout.cshtml)
+### 3. Initialize in Layout (`_Layout.cshtml`)
 Include the CSS in `<head>` and the script + tag helper before `</body>`.
 
 ```html
@@ -145,6 +157,12 @@ window.sonnerInstance.toast('Something went wrong.', 'Error', null, 'top-center'
 
 ---
 
+## 📜 Publishing Update
+To publish a new version:
+1. Update version in `.csproj`.
+2. Run `dotnet pack -c Release`.
+3. Upload `.nupkg` to NuGet.org.
 
+---
 
 *Crafted with ❤️ by ARG RABBI for the robust .NET ecosystem.*
