@@ -156,12 +156,7 @@ window.sonnerInstance.toast('Operation completed!', 'Success', 'Success Title');
 window.sonnerInstance.toast('Something went wrong.', 'Error', null, 'top-center');
 
 // Supported position strings: 
-// 'top-left', 'top-center', 'top-right', 
-// 'bottom-left', 'bottom-center', 'bottom-right'
 ```
-
----
-
 
 ---
 

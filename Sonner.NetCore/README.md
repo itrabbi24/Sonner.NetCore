@@ -158,7 +158,4 @@ window.sonnerInstance.toast('Something went wrong.', 'Error', null, 'top-center'
 
 ---
 
-
----
-
 *Crafted with ❤️ by ARG RABBI for the robust .NET ecosystem.*
