@@ -11,7 +11,7 @@
     <Authors>ARG RABBI</Authors>
     <Company>ARG RABBI</Company>
     <Description>An elegant, Sonner-inspired Vanilla JS Toast library for ASP.NET Core MVC &amp; Razor Pages.</Description>
-    <RepositoryUrl>https://github.com/itrabbi24/sonner-dotnet-core</RepositoryUrl>
+    <RepositoryUrl>https://github.com/itrabbi24/ARG.RABBI.Sonner.NetCore</RepositoryUrl>
     <ProjectUrl>https://itrabbi24.github.io/</ProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
