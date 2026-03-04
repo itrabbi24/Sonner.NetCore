@@ -1,6 +1,7 @@
 # Sonner.NetCore
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/itrabbi24/Sonner.NetCore)
+[![NuGet](https://img.shields.io/nuget/v/ARG.RABBI.Sonner.NetCore.svg)](https://www.nuget.org/packages/ARG.RABBI.Sonner.NetCore/)
 
 An elegant, robust, and lightweight toaster library for .NET Core MVC and Razor Pages. Inspired by the popular React library [Sonner](https://sonner.emilkowal.ski/), but built from the ground up for backend-driven .NET web applications.
 
@@ -25,6 +26,8 @@ By **ARG RABBI** - [Visit Profile](https://itrabbi24.github.io/)
 ---
 
 ## 📦 Installation
+
+**NuGet Package:** [ARG.RABBI.Sonner.NetCore](https://www.nuget.org/packages/ARG.RABBI.Sonner.NetCore/)
 
 **Via NuGet Package Manager Console:**
 ```bash
@@ -159,11 +162,6 @@ window.sonnerInstance.toast('Something went wrong.', 'Error', null, 'top-center'
 
 ---
 
-## 📜 Publishing Update
-To publish a new version:
-1. Update version in `.csproj`.
-2. Run `dotnet pack -c Release`.
-3. Upload `.nupkg` to NuGet.org.
 
 ---
 
