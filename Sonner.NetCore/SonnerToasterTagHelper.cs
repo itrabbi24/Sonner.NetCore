@@ -8,31 +8,53 @@ namespace Sonner.NetCore
 {
     [HtmlTargetElement("sonner-toaster")]
     public class SonnerToasterTagHelper : TagHelper
-{
-    [ViewContext]
-    [HtmlAttributeNotBound]
-    public ViewContext ViewContext { get; set; } = null!;
-
-    public override void Process(TagHelperContext context, TagHelperOutput output)
     {
-        output.TagName = null; // Do not render the <sonner-toaster> tag itself
+        [ViewContext]
+        [HtmlAttributeNotBound]
+        public ViewContext ViewContext { get; set; } = null!;
 
-        var toasts = ToastExtensions.GetToasts(ViewContext.TempData);
-        if (toasts.Count == 0) return;
+        public ToasterPosition Position { get; set; } = ToasterPosition.BottomRight;
+        public bool Expand { get; set; } = false;
+        public bool RichColors { get; set; } = false;
+        public bool CloseButton { get; set; } = false;
+        public string Theme { get; set; } = "light";
 
-        var scriptBuilder = new StringBuilder();
-        scriptBuilder.AppendLine("<script>");
-        scriptBuilder.AppendLine("document.addEventListener('DOMContentLoaded', function() {");
-
-        foreach (var toast in toasts)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            var message = JsonSerializer.Serialize(toast.Message);
-            var title = toast.Title != null ? JsonSerializer.Serialize(toast.Title) : "null";
-            scriptBuilder.AppendLine($"    window.sonner.toast({message}, '{toast.Type}', {title});");
-        }
+            output.TagName = null;
 
-        scriptBuilder.AppendLine("});");
-        scriptBuilder.AppendLine("</script>");
+            var toasts = ToastExtensions.GetToasts(ViewContext.TempData);
+            
+            var scriptBuilder = new StringBuilder();
+            scriptBuilder.AppendLine("<script>");
+            scriptBuilder.AppendLine("document.addEventListener('DOMContentLoaded', function() {");
+
+            // Initialize toaster with options
+            var options = new
+            {
+                position = Position.ToString().ToLower().Replace("bottom", "bottom-").Replace("top", "top-").Replace("center", "center").Replace("left", "left").Replace("right", "right"),
+                expand = Expand,
+                richColors = RichColors,
+                closeButton = CloseButton,
+                theme = Theme
+            };
+            
+            // Fix position mapping (TopLeft -> top-left, etc)
+            string pos = Position.ToString();
+            if (pos.StartsWith("Top")) pos = "top-" + pos.Substring(3).ToLower();
+            else if (pos.StartsWith("Bottom")) pos = "bottom-" + pos.Substring(6).ToLower();
+
+            scriptBuilder.AppendLine($"    if (!window.sonnerInstance) {{ window.sonnerInstance = new SonnerToaster({{ position: '{pos.ToLower()}', expand: {Expand.ToString().ToLower()}, richColors: {RichColors.ToString().ToLower()}, closeButton: {CloseButton.ToString().ToLower()}, theme: '{Theme}' }}); }}");
+
+            foreach (var toast in toasts)
+            {
+                var message = JsonSerializer.Serialize(toast.Message);
+                var title = toast.Title != null ? JsonSerializer.Serialize(toast.Title) : "null";
+                scriptBuilder.AppendLine($"    window.sonnerInstance.toast({message}, '{toast.Type}', {title});");
+            }
+
+            scriptBuilder.AppendLine("});");
+            scriptBuilder.AppendLine("</script>");
 
             output.Content.SetHtmlContent(scriptBuilder.ToString());
         }

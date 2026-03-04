@@ -8,36 +8,73 @@
 </div>
 
 <div class="row justify-content-center mt-5">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-body p-4">
-                <h4 class="mb-4">Trigger a Toast from the Backend</h4>
+                <h4 class="mb-4">Sonner Features Test</h4>
                 
                 <form asp-controller="Home" asp-action="TriggerToast" method="post">
-                    
-                    <div class="mb-3">
-                        <label class="form-label">Toast Type</label>
-                        <select name="type" class="form-select">
-                            <option value="Default">Default</option>
-                            <option value="Success">Success</option>
-                            <option value="Error">Error</option>
-                            <option value="Warning">Warning</option>
-                            <option value="Info">Info</option>
-                        </select>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Toast Type</label>
+                                <select name="type" class="form-select">
+                                    <option value="Default">Default</option>
+                                    <option value="Success">Success</option>
+                                    <option value="Error">Error</option>
+                                    <option value="Warning">Warning</option>
+                                    <option value="Info">Info</option>
+                                </select>
+                            </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Title (Optional)</label>
-                        <input type="text" name="title" class="form-control" placeholder="e.g., File Uploaded" />
-                    </div>
+                            <div class="mb-3">
+                                <label class="form-label">Title (Optional)</label>
+                                <input type="text" name="title" class="form-control" placeholder="e.g., File Uploaded" />
+                            </div>
 
-                    <div class="mb-4">
-                        <label class="form-label">Message</label>
-                        <textarea name="message" class="form-control" rows="2" required>This is an example toast from ARG RABBI's .NET Sonner library!</textarea>
+                            <div class="mb-4">
+                                <label class="form-label">Message</label>
+                                <textarea name="message" class="form-control" rows="2" required>This is an example toast from ARG RABBI's .NET Sonner library!</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                             <div class="mb-3">
+                                <label class="form-label">Position (Currently set in _Layout)</label>
+                                <div class="text-muted small">Update &lt;sonner-toaster&gt; in _Layout.cshtml to change position.</div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="expandToggle" onchange="window.sonnerInstance.options.expand = this.checked; if(this.checked) window.sonnerInstance.container.classList.add('sonner-toaster-expand'); else window.sonnerInstance.container.classList.remove('sonner-toaster-expand');">
+                                    <label class="form-check-label" for="expandToggle">Expand by default</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="richColorsToggle" onchange="window.sonnerInstance.options.richColors = this.checked;">
+                                    <label class="form-check-label" for="richColorsToggle">Rich Colors</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="closeButtonToggle" onchange="window.sonnerInstance.options.closeButton = this.checked;">
+                                    <label class="form-check-label" for="closeButtonToggle">Close Button</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Theme</label>
+                                <select class="form-select" onchange="window.sonnerInstance.options.theme = this.value; window.sonnerInstance.container.setAttribute('data-theme', this.value);">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-dark w-100 py-2">Trigger Toast &amp; Reload Page</button>
                     
+                    <div class="mt-3 text-center">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.sonnerInstance.toast('Client-side test toast', 'Success', 'Local Test')">Test Local Toast</button>
+                    </div>
                 </form>
             </div>
         </div>

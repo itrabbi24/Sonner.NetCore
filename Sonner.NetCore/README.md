@@ -12,12 +12,16 @@ By **ARG RABBI** - [Visit Profile](https://itrabbi24.github.io/)
 
 ## 🚀 Features
 
+- **Full Positioning Support:** All 6 positions (Top/Bottom + Left/Center/Right).
+- **Stacking & Expanding:** Elegant toast stacking by default, expanding on hover.
+- **Rich Colors:** Vibrant color palettes for Success, Error, Warning, and Info.
+- **Dark Theme:** Built-in night mode support.
+- **Close Button:** Optional dismiss button for individual toasts.
 - **No React/Vue required!** Pure Vanilla JS and CSS natively integrated into .NET.
 - **Trigger Toasts from C#:** Seamlessly add toasts directly from your Controllers (`.AddSuccessToast()`).
 - **Tag Helper Integration:** Simply drop `<sonner-toaster></sonner-toaster>` into your Layout.
-- **Embedded Resources:** CSS and JS are bundled directly inside the NuGet package. No manual copying needed.
+- **Embedded Resources:** CSS and JS are bundled directly inside the NuGet package.
 - **Framework Support:** Compatible with .NET 5.0 through .NET 9.0.
-- **Modern UI:** Smooth animations, clean aesthetics, and responsive design.
 
 ---
 
@@ -91,7 +95,13 @@ Open your `Views/Shared/_Layout.cshtml`. You need to include the CSS in your `<h
 
     <!-- Load Sonner -->
     <script src="~/sonner.js"></script>
-    <sonner-toaster></sonner-toaster>
+    <sonner-toaster 
+        position="BottomRight" 
+        expand="false" 
+        rich-colors="true" 
+        close-button="true" 
+        theme="light">
+    </sonner-toaster>
 </body>
 </html>
 ```
