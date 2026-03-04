@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace Sonner.NetCore
 {
+    /// <summary>
+    /// Tag Helper to render the Sonner toaster and initialize it with queued toasts from TempData.
+    /// </summary>
     [HtmlTargetElement("sonner-toaster")]
     public class SonnerToasterTagHelper : TagHelper
     {
@@ -13,15 +16,34 @@ namespace Sonner.NetCore
         [HtmlAttributeNotBound]
         public ViewContext ViewContext { get; set; } = null!;
 
+        /// <summary>
+        /// Gets or sets the default position for toasts (e.g., BottomRight, TopCenter).
+        /// </summary>
         public ToasterPosition Position { get; set; } = ToasterPosition.BottomRight;
+
+        /// <summary>
+        /// Gets or sets whether toasts should be expanded by default.
+        /// </summary>
         public bool Expand { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets whether to use vibrant background colors.
+        /// </summary>
         public bool RichColors { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets whether to show a close button on each toast.
+        /// </summary>
         public bool CloseButton { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the UI theme ('light' or 'dark').
+        /// </summary>
         public string Theme { get; set; } = "light";
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            output.TagName = null;
+            output.TagName = null; // Don't render the <sonner-toaster> tag itself
 
             var toasts = ToastExtensions.GetToasts(ViewContext.TempData);
             
@@ -29,28 +51,28 @@ namespace Sonner.NetCore
             scriptBuilder.AppendLine("<script>");
             scriptBuilder.AppendLine("document.addEventListener('DOMContentLoaded', function() {");
 
-            // Initialize toaster with options
-            var options = new
-            {
-                position = Position.ToString().ToLower().Replace("bottom", "bottom-").Replace("top", "top-").Replace("center", "center").Replace("left", "left").Replace("right", "right"),
-                expand = Expand,
-                richColors = RichColors,
-                closeButton = CloseButton,
-                theme = Theme
-            };
-            
-            // Fix position mapping (TopLeft -> top-left, etc)
+            // Map position enum to JS string (TopLeft -> top-left)
             string pos = Position.ToString();
             if (pos.StartsWith("Top")) pos = "top-" + pos.Substring(3).ToLower();
             else if (pos.StartsWith("Bottom")) pos = "bottom-" + pos.Substring(6).ToLower();
 
-            scriptBuilder.AppendLine($"    if (!window.sonnerInstance) {{ window.sonnerInstance = new SonnerToaster({{ position: '{pos.ToLower()}', expand: {Expand.ToString().ToLower()}, richColors: {RichColors.ToString().ToLower()}, closeButton: {CloseButton.ToString().ToLower()}, theme: '{Theme}' }}); }}");
+            // Initialize global instance with options
+            scriptBuilder.AppendLine($"    if (!window.sonnerInstance) {{ ");
+            scriptBuilder.AppendLine($"        window.sonnerInstance = new SonnerToaster({{ ");
+            scriptBuilder.AppendLine($"            position: '{pos.ToLower()}', ");
+            scriptBuilder.AppendLine($"            expand: {Expand.ToString().ToLower()}, ");
+            scriptBuilder.AppendLine($"            richColors: {RichColors.ToString().ToLower()}, ");
+            scriptBuilder.AppendLine($"            closeButton: {CloseButton.ToString().ToLower()}, ");
+            scriptBuilder.AppendLine($"            theme: '{Theme}' ");
+            scriptBuilder.AppendLine($"        }}); ");
+            scriptBuilder.AppendLine($"    }}");
 
             foreach (var toast in toasts)
             {
                 var message = JsonSerializer.Serialize(toast.Message);
                 var title = toast.Title != null ? JsonSerializer.Serialize(toast.Title) : "null";
                 var toastPos = "null";
+                
                 if (toast.Position.HasValue)
                 {
                     string p = toast.Position.Value.ToString();

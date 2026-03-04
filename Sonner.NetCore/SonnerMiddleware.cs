@@ -1,64 +1,83 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Sonner.NetCore
 {
+    /// <summary>
+    /// Middleware to serve Sonner's embedded CSS and JS files.
+    /// </summary>
     public class SonnerMiddleware
-{
-    private readonly RequestDelegate _next;
-    private readonly string _cssContent;
-    private readonly string _jsContent;
-
-    public SonnerMiddleware(RequestDelegate next)
     {
-        _next = next;
-        
-        var assembly = typeof(SonnerMiddleware).GetTypeInfo().Assembly;
-        
-        using (var cssStream = assembly.GetManifestResourceStream("Sonner.NetCore.wwwroot.css.sonner.css"))
-        using (var cssReader = new System.IO.StreamReader(cssStream!))
-        {
-            _cssContent = cssReader.ReadToEnd();
-        }
+        private readonly RequestDelegate _next;
+        private readonly string _cssContent;
+        private readonly string _jsContent;
 
-        using (var jsStream = assembly.GetManifestResourceStream("Sonner.NetCore.wwwroot.js.sonner.js"))
-        using (var jsReader = new System.IO.StreamReader(jsStream!))
+        public SonnerMiddleware(RequestDelegate next)
         {
-            _jsContent = jsReader.ReadToEnd();
-        }
-    }
+            _next = next;
 
-    public async Task InvokeAsync(HttpContext context)
-    {
-        var path = context.Request.Path.Value;
+            var assembly = typeof(SonnerMiddleware).Assembly;
 
-        if (path != null)
-        {
-            if (path.Equals("/sonner.css", System.StringComparison.OrdinalIgnoreCase))
+            // Load embedded CSS
+            using (var cssStream = assembly.GetManifestResourceStream("Sonner.NetCore.wwwroot.css.sonner.css"))
             {
-                context.Response.ContentType = "text/css";
-                await context.Response.WriteAsync(_cssContent);
-                return;
+                if (cssStream == null) throw new InvalidOperationException("Could not find embedded sonner.css");
+                using (var cssReader = new StreamReader(cssStream))
+                {
+                    _cssContent = cssReader.ReadToEnd();
+                }
             }
-            
-            if (path.Equals("/sonner.js", System.StringComparison.OrdinalIgnoreCase))
+
+            // Load embedded JS
+            using (var jsStream = assembly.GetManifestResourceStream("Sonner.NetCore.wwwroot.js.sonner.js"))
             {
-                context.Response.ContentType = "application/javascript";
-                await context.Response.WriteAsync(_jsContent);
-                return;
+                if (jsStream == null) throw new InvalidOperationException("Could not find embedded sonner.js");
+                using (var jsReader = new StreamReader(jsStream))
+                {
+                    _jsContent = jsReader.ReadToEnd();
+                }
             }
         }
 
-        await _next(context);
-    }
-}
+        public async Task InvokeAsync(HttpContext context)
+        {
+            var path = context.Request.Path.Value;
 
-public static class SonnerMiddlewareExtensions
-{
-    public static IApplicationBuilder UseSonner(this IApplicationBuilder builder)
+            if (!string.IsNullOrEmpty(path))
+            {
+                if (path.Equals("/sonner.css", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.ContentType = "text/css";
+                    await context.Response.WriteAsync(_cssContent);
+                    return;
+                }
+
+                if (path.Equals("/sonner.js", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.ContentType = "application/javascript";
+                    await context.Response.WriteAsync(_jsContent);
+                    return;
+                }
+            }
+
+            await _next(context);
+        }
+    }
+
+    /// <summary>
+    /// Extension methods for Sonner middleware.
+    /// </summary>
+    public static class SonnerMiddlewareExtensions
     {
+        /// <summary>
+        /// Enables serving of Sonner's embedded assets (sonner.css and sonner.js).
+        /// </summary>
+        public static IApplicationBuilder UseSonner(this IApplicationBuilder builder)
+        {
             return builder.UseMiddleware<SonnerMiddleware>();
         }
     }

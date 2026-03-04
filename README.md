@@ -12,6 +12,7 @@ By **ARG RABBI** - [Visit Profile](https://itrabbi24.github.io/)
 
 ## 🚀 Features
 
+- **Framework Support:** Native support for .NET 5.0, 6.0, 7.0, 8.0, and .NET 9.0.
 - **Full Positioning Support:** Choose from 6 different positions.
 - **Stacking & Expanding:** Sophisticated stacking logic that expands on hover.
 - **Rich Colors:** Vibrant background colors for success, error, info, and warning states.
