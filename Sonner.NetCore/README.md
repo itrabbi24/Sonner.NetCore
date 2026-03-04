@@ -5,7 +5,7 @@
 
 An elegant, robust, and lightweight toaster library for .NET Core MVC and Razor Pages. Inspired by the popular React library [Sonner](https://sonner.emilkowal.ski/), but built from the ground up for backend-driven .NET web applications.
 
-![Sonner Demo](../images/sonner-demo.png) *(Preview of the Toast)*
+![Sonner Demo](https://raw.githubusercontent.com/itrabbi24/Sonner.NetCore/main/images/sonner-demo.png) *(Preview of the Toast)*
 
 By **ARG RABBI** - [Visit Profile](https://itrabbi24.github.io/)
 
