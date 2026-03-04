@@ -7,7 +7,7 @@
 
     <!-- NuGet Package Properties -->
     <PackageId>ARG.RABBI.Sonner.NetCore</PackageId>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <Authors>ARG RABBI</Authors>
     <Company>ARG RABBI</Company>
     <Description>An elegant, Sonner-inspired Vanilla JS Toast library for ASP.NET Core MVC &amp; Razor Pages.</Description>
